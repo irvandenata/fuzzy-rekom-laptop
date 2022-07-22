@@ -100,7 +100,7 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
                         <h2 class="text-white d-block">{{ auth()->user()->name }}</h2>
-                        <h6 class="text-white d-block">Admin</h6>
+                        <h6 class="text-white d-block">{{ auth()->user()->role->name }}</h6>
                     </div>
                 </div>
 
@@ -116,7 +116,15 @@
                             </a>
                         </li>
                         @if (auth()->user()->role_id==1)
-                                <li class="nav-item has-treeview">
+                        <li class="nav-item has-treeview">
+                            <a href="{{ route('transaction.index') }}" class="nav-link @if (Request::is('transaction')) active  @endif">
+                                <i class="nav-icon fas fa-user-cog"></i>
+                                <p>
+                                    Transaksi
+                                </p>
+                            </a>
+                        </li>
+                               <li class="nav-item has-treeview">
                             <a href="{{ route('user.index') }}" class="nav-link @if (Request::is('user')) active  @endif">
                                 <i class="nav-icon fas fa-user-cog"></i>
                                 <p>
@@ -124,17 +132,6 @@
                                 </p>
                             </a>
                         </li>
-                        @endif
-
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('pasien.index') }}" class="nav-link @if (Request::is('pasien')) active  @endif">
-                                <i class="nav-icon fas fa-user-alt"></i>
-                                <p>
-                                    Pasien
-                                </p>
-                            </a>
-                        </li>
-                          @if (auth()->user()->role_id==1)
                         <li class="nav-item has-treeview @if (Request::is('master-data*')) menu-open  @endif">
                             <a href="#" class="nav-link  @if (Request::is('master-data*')) active  @endif">
                                 <i class="nav-icon fas fa-copy"></i>
@@ -145,17 +142,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('kota.index') }}" class="nav-link @if (Request::is('*kota')) active  @endif">
+                                    <a href="{{ route('product.index') }}" class="nav-link @if (Request::is('*product')) active  @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Kota</p>
-                                    </a>
-                                        <a href="{{ route('kecamatan.index') }}" class="nav-link  @if (Request::is('*kecamatan')) active  @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Kecamatan</p>
-                                    </a>
-                                        <a href="{{ route('kelurahan.index') }}" class="nav-link @if (Request::is('*kelurahan')) active  @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Kelurahan</p>
+                                        <p>Produk</p>
                                     </a>
                                 </li>
                             </ul>

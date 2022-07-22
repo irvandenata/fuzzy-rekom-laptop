@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,8 +14,17 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
+
+
+Route::middleware('auth:sanctum')->group(function () {
+Route::post('/logout', [UserController::class, 'logout']);
+Route::get('/fetch-user', [UserController::class, 'fetch']);
+Route::get('/product', [ProductController::class, 'all']);
+Route::post('/checkout', [TransactionController::class, 'checkout']);
+Route::get('/transaction', [TransactionController::class, 'all']);
+
 });

@@ -6,12 +6,16 @@
 <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
 @endpush
 
 @push('style')
-
+<style>
+    .w-full{
+        width: 100% !important;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -24,7 +28,11 @@
                     <thead>
                         <tr>
                             <th width="10%">No</th>
-                            <th>Nama Kota</th>
+                            <th>Pembeli</th>
+                            <th>Barang</th>
+                            <th>Total Harga</th>
+                            <th>Status Transaksi</th>
+                            <th>Link Pembayaran</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
@@ -33,9 +41,8 @@
                 </table>
             </div>
         </div>
-
     </div>
-    @include('admin.master_data.kota._form')
+    @include('admin.master_data.transaction._form')
 </div>
 @endsection
 
@@ -50,6 +57,8 @@
 <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endpush
 
 @push('script')
@@ -57,6 +66,8 @@
 
     @include('utils.js')
     <script>
+        $('.select2').select2();
+        $('.select2-product').select2();
         let dataTable = $('#datatable').DataTable({
             dom: 'lBfrtip',
             buttons: [{
@@ -94,10 +105,26 @@
                     orderable: false
                 },
                 {
-                    data: 'nama_kota',
+                    data: 'user.name',
+                    orderable: true
+                },
+                 {
+                    data: 'product.name',
                     orderable: true
                 },
 
+                {
+                    data: 'total',
+                    orderable: true
+                },
+                 {
+                    data: 'status',
+                    orderable: true
+                },
+                  {
+                    data: 'payment_url',
+                    orderable: true
+                },
                 {
                     data: 'action',
                     name: '#',
@@ -111,14 +138,14 @@
     <script>
         function createItem() {
             setForm('create', 'POST', ('Create {{ $title }}'), true)
+            $('#kecamatan').val(0).trigger('change');
+
 
         }
 
         function editItem(id) {
             setForm('update', 'PUT', 'Edit {{ $title }}', true)
             editData(id)
-
-
         }
 
         function deleteItem(id) {
@@ -132,7 +159,10 @@
         /** set data untuk edit**/
         function setData(result) {
             $('input[name=id]').val(result.id);
-            $('input[name=nama_kota]').val(result.nama_kota);
+            $('input[name=amount]').val(result.amount);
+            $('input[name=payment_url]').val(result.payment_url);
+            $('#user').val(result.user_id).trigger('change');
+            $('#product').val(result.product_id).trigger('change');
         }
 
 
@@ -140,6 +170,9 @@
         function reloadDatatable() {
             dataTable.ajax.reload();
         }
+
+
+
 
 
     </script>

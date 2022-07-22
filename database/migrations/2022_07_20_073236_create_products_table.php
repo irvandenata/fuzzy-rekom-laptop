@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKecamatansTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateKecamatansTable extends Migration
      */
     public function up()
     {
-        Schema::create('kecamatans', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kota_id');
-            $table->string('nama_kecamatan');
+            $table->string('name');
+            $table->text('description');
+            $table->bigInteger('price');
+            $table->string('imagePath')->nullable();
             $table->timestamps();
-            $table->foreign('kota_id')->references('id')->on('kotas')->onUpdate('CASCADE')->onDelete('CASCADE');
-
         });
     }
 
@@ -30,6 +30,6 @@ class CreateKecamatansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kecamatans');
+        Schema::dropIfExists('products');
     }
 }

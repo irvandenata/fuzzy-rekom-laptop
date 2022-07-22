@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\MasterKecamatanController;
-use App\Http\Controllers\Admin\MasterKelurahanController;
-use App\Http\Controllers\Admin\MasterKotaController;
-use App\Http\Controllers\Admin\PasienController;
+use App\Http\Controllers\Admin\MasterProductController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,14 +26,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('admin')->group(function () {
     Route::resource('user', UserController::class);
+    Route::resource('transaction', TransactionController::class);
+
     Route::prefix('master-data')->group(function () {
-        Route::resource('kota', MasterKotaController::class);
-        Route::resource('kecamatan', MasterKecamatanController::class);
-        Route::resource('kelurahan', MasterKelurahanController::class);
+        Route::resource('product', MasterProductController::class);
     });
-
 });
-Route::middleware('auth')->group(function () {
-    Route::resource('pasien', PasienController::class);
-});
-

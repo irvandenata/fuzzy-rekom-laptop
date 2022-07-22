@@ -23,7 +23,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ asset('assets') }}/index2.html"><b>TEST</b>APP</a>
+            <a href="{{ asset('assets') }}/index2.html"><b>Nakes Homecare</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
