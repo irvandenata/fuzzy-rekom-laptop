@@ -54,11 +54,8 @@ class TransactionController extends Controller
         Config::$isSanitized = config('services.midtrans.isSanitized');
         Config::$is3ds = config('services.midtrans.is3ds');
 
-        
-
-        $transaction = Transaction::find($transaction->id);
-       
-	$midtrains = [
+        $transaction = Transaction::with(['user','product'])->find($transaction->id);
+        $midtrains = [
             "transaction_details" => [
                 "order_id" => $transaction->id,
                 "gross_amount" => $transaction->total,
