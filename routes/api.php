@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 
+Route::get('/product', [ProductController::class, 'all']);
 
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/fetch-user', [UserController::class, 'fetch']);
-Route::get('/product', [ProductController::class, 'all']);
 Route::post('/checkout', [TransactionController::class, 'checkout']);
 Route::get('/transaction', [TransactionController::class, 'all']);
 
