@@ -31,7 +31,6 @@ class TransactionController extends Controller
     }
     public function checkout(Request $request)
     {
-
         try {
         $request->validate([
             'product_id' => 'required|exists:products,id',
@@ -47,6 +46,7 @@ class TransactionController extends Controller
             'status' => $request->status,
             'payment_url' => '',
         ]);
+        
 
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$clientKey = config('services.midtrans.clientKey');
@@ -54,8 +54,11 @@ class TransactionController extends Controller
         Config::$isSanitized = config('services.midtrans.isSanitized');
         Config::$is3ds = config('services.midtrans.is3ds');
 
+        
+
         $transaction = Transaction::find($transaction->id);
-        $midtrains = [
+       
+	$midtrains = [
             "transaction_details" => [
                 "order_id" => $transaction->id,
                 "gross_amount" => $transaction->total,
@@ -76,11 +79,10 @@ class TransactionController extends Controller
 
             $transaction->payment_url = $paymentUrl;
             $transaction->save();
-
+	    
             return ResponseFormatter::success($transaction, 'Transaksi Berhasil !');
 
         } catch (\Exception $e) {
-		return $e->getMessage();
             return ResponseFormatter::error($e->getMessage(), 'Transaksi Gagal !');
 
         }
