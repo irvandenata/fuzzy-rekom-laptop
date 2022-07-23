@@ -80,6 +80,7 @@ class TransactionController extends Controller
             return ResponseFormatter::success($transaction, 'Transaksi Berhasil !');
 
         } catch (\Exception $e) {
+		return $e->getMessage();
             return ResponseFormatter::error($e->getMessage(), 'Transaksi Gagal !');
 
         }
