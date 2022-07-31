@@ -65,16 +65,16 @@
 		<div class="container position-relative" style="margin-top: 100px">
 			<div class="row justify-align-center">
 				@foreach ($product as $item)
-					<div class="col-7 my-2 mx-auto">
+					<div class="col-lg-7 col-8 my-2 mx-auto">
 						<div class="card p-4" style="width: 100%">
-							<div class="row">
-								<div class="col-2">
+							<div class="row justify-content-center">
+								<div class="col-lg-2 col-sm-1">
 									<h1>{{ $loop->iteration }}</h1>
 								</div>
-								<div class="col-3">
+								<div class="col-lg-3 col-sm-11">
 									<img src="/storage/{{ $item->imagePath }}" width="120" alt="">
 								</div>
-								<div class="col-4">
+								<div class="col-lg-4 col-sm-12">
 									<h4>{{ $item->tipe }} - {{ $item->tahun }} </h4>
 									<h6>Ram : {{ $item->ram }} GB ({{ $item->speed_ram }} MHz) </h6>
 									<h6>Processor : {{ $item->processor }} ({{ $item->speed_processor }} GHz) </h6>
