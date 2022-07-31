@@ -20,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/form', [App\Http\Controllers\FuzzyController::class, 'form'])->name('form');
+Route::post('/fuzzy', [App\Http\Controllers\FuzzyController::class, 'index'])->name('fuzzy');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

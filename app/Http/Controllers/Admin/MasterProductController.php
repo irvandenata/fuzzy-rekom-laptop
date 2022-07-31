@@ -8,7 +8,6 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class MasterProductController extends Controller
@@ -72,15 +71,6 @@ class MasterProductController extends Controller
         DB::beginTransaction();
         try {
 
-            $v = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'price' => 'numeric',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048|dimensions:min_width=100,max_width=1500',
-                'description' => 'string',
-            ]);
-            if ($v->fails()) {
-                throw new CustomException("error", 500, null, $v->errors()->all());
-            }
             if ($request->hasFile('image')) {
                 $extension = $request->file('image')->getClientOriginalExtension();
                 $fileNameToStore = date('Y-m-d') . '-' . $this->generateRandomString(5) . '.' . time() . '.' . $extension;
@@ -89,9 +79,17 @@ class MasterProductController extends Controller
             }
 
             $product = new Product();
-            $product->name = $request->name;
-            $product->price = $request->price;
-            $product->description = $request->description;
+            $product->tipe = $request->tipe;
+            $product->tahun = $request->tahun;
+            $product->processor = $request->processor;
+            $product->speed_processor = $request->speed_processor;
+            $product->ram = $request->ram;
+            $product->speed_ram = $request->speed_ram;
+            $product->storage = $request->storage;
+            $product->speed_write = $request->speed_write;
+            $product->speed_read = $request->speed_read;
+            $product->harga = $request->harga;
+
             $product->imagePath = $fileNameToStore;
             $product->save();
             DB::commit();
@@ -141,16 +139,6 @@ class MasterProductController extends Controller
         $fileNameToStore = null;
         DB::beginTransaction();
         try {
-
-            $v = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'price' => 'numeric',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048|dimensions:min_width=100,max_width=1500',
-                'description' => 'string',
-            ]);
-            if ($v->fails()) {
-                throw new CustomException("error", 500, null, $v->errors()->all());
-            }
             if ($request->hasFile('image')) {
                 if (File::exists('storage/' . $product->imagePath)) {
                     File::delete('storage/' . $product->imagePath);
@@ -161,10 +149,16 @@ class MasterProductController extends Controller
                 $fileNameToStore = 'image/' . $fileNameToStore;
                 $product->imagePath = $fileNameToStore;
             }
-            $product->name = $request->name;
-            $product->price = $request->price;
-            $product->description = $request->description;
-            $product->imagePath = $fileNameToStore;
+            $product->tipe = $request->tipe;
+            $product->tahun = $request->tahun;
+            $product->processor = $request->processor;
+            $product->speed_processor = $request->speed_processor;
+            $product->ram = $request->ram;
+            $product->speed_ram = $request->speed_ram;
+            $product->storage = $request->storage;
+            $product->speed_write = $request->speed_write;
+            $product->speed_read = $request->speed_read;
+            $product->harga = $request->harga;
             $product->save();
             DB::commit();
 
@@ -187,7 +181,7 @@ class MasterProductController extends Controller
      */
     public function destroy(Product $product)
     {
-          try {
+        try {
             if (File::exists('storage/' . $product->imagePath)) {
                 File::delete('storage/' . $product->imagePath);
             }
@@ -195,7 +189,7 @@ class MasterProductController extends Controller
             $product->delete();
             return response()->json(['message' => "Product has been delete !"], 200);
 
-        } catch (\Throwable $th) {
+        } catch (\Throwable$th) {
             return response()->json('Terjadi Kesalahan !', 500);
         }
     }
