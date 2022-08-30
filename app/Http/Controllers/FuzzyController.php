@@ -170,20 +170,26 @@ class FuzzyController extends Controller
         $kec_read = $request->speed_read;
         $tipe = $request->tipe;
         $biaya = $request->harga;
-
         $product = Product::all();
-        foreach ($product as $key => $item) {
-            $item->fuzzy_tahun = self::fuzzyTahun($item->tahun, $tahun);
-            $item->fuzzy_processor = self::fuzzyKecProcessor($item->speed_processor, $kec_processor);
-            $item->fuzzy_ram = self::fuzzyRam($item->ram, $ram);
-            $item->fuzzy_kec_ram = self::fuzzyKecRam($item->speed_ram, $kec_ram);
-            $item->fuzzy_storage = self::fuzzyStorage($item->storage, $storage);
-            $item->fuzzy_storage_write = self::fuzzyKecStorage($item->speed_write, $kec_write);
-            $item->fuzzy_storage_read = self::fuzzyKecStorage($item->speed_read, $kec_read);
-            $item->derajat_keanggotaan = $item->fuzzy_tahun + $item->fuzzy_processor + $item->fuzzy_ram + $item->fuzzy_kec_ram + $item->fuzzy_storage + $item->fuzzy_storage_write + $item->fuzzy_storage_read;
-            $item->rata_derajat_keanggotaan = ($item->fuzzy_tahun + $item->fuzzy_processor + $item->fuzzy_ram + $item->fuzzy_kec_ram + $item->fuzzy_storage + $item->fuzzy_storage_write + $item->fuzzy_storage_read) / 7;
 
+        if ($request->tahun && $request->speed_processor && $request->ram && $request->speed_ram && $request->storage && $request->speed_write && $request->speed_read && $request->tipe) {
+            dd("jalan");
+            foreach ($product as $key => $item) {
+                $item->fuzzy_tahun = self::fuzzyTahun($item->tahun, $tahun);
+                $item->fuzzy_processor = self::fuzzyKecProcessor($item->speed_processor, $kec_processor);
+                $item->fuzzy_ram = self::fuzzyRam($item->ram, $ram);
+                $item->fuzzy_kec_ram = self::fuzzyKecRam($item->speed_ram, $kec_ram);
+                $item->fuzzy_storage = self::fuzzyStorage($item->storage, $storage);
+                $item->fuzzy_storage_write = self::fuzzyKecStorage($item->speed_write, $kec_write);
+                $item->fuzzy_storage_read = self::fuzzyKecStorage($item->speed_read, $kec_read);
+                $item->derajat_keanggotaan = $item->fuzzy_tahun + $item->fuzzy_processor + $item->fuzzy_ram + $item->fuzzy_kec_ram + $item->fuzzy_storage + $item->fuzzy_storage_write + $item->fuzzy_storage_read;
+                $item->rata_derajat_keanggotaan = ($item->fuzzy_tahun + $item->fuzzy_processor + $item->fuzzy_ram + $item->fuzzy_kec_ram + $item->fuzzy_storage + $item->fuzzy_storage_write + $item->fuzzy_storage_read) / 7;
+            }
+        } else {
+            $data['product'] = $product->where('harga', '<=', $biaya);
+            return view('fuzzy', $data);
         }
+        dd("jalan");
 
         $product = $product->where('tipe', $tipe);
         $data['product'] = $product->where('harga', '<=', $biaya)->sortByDesc('rata_derajat_keanggotaan');
