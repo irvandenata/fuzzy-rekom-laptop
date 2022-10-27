@@ -75,6 +75,7 @@
 								<label for="">Pilih Tipe</label>
 								<select name="tipe" class="form-control" id="" selected>
 									<option value disabled selected>-- Pilih Salah Satu ---</option>
+									<option value="semua">Semua</option>
 									<option value="Macbook Pro">Macbook Pro</option>
 									<option value="Macbook Air">Macbook Air</option>
 								</select>
@@ -91,11 +92,20 @@
 							<div class="col-6 form-group">
 								<label for="">Pilih Kecepatan Processor</label>
 								<select name="speed_processor" class="form-control" id="" selected>
-									<option value disabled selected>-- Pilih Salah Satu ---</option>
+									<option value='' disabled selected>-- Pilih Salah Satu ---</option>
 
 									<option value="cepat">Cepat</option>
 									<option value="sedang">Sedang</option>
 									<option value="lambat">Lambat</option>
+								</select>
+							</div>
+							<div class="col-6 form-group">
+								<label for="">Pilih Jenis Processor</label>
+								<select name="processor" class="form-control" id="" selected>
+									<option value='' disabled selected>-- Pilih Salah Satu ---</option>
+									@foreach ($processor as $item)
+										<option value="{{ $item->processor }}">{{ $item->processor }}</option>
+									@endforeach
 								</select>
 							</div>
 

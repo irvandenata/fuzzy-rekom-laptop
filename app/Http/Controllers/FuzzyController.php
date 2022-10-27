@@ -171,9 +171,11 @@ class FuzzyController extends Controller
         $tipe = $request->tipe;
         $biaya = $request->harga;
         $product = Product::all();
+        if ($request->processor) {
+            $product = $product->where('processor', $request->processor);
+        }
 
         if ($request->tahun && $request->speed_processor && $request->ram && $request->speed_ram && $request->storage && $request->speed_write && $request->speed_read && $request->tipe) {
-            dd("jalan");
             foreach ($product as $key => $item) {
                 $item->fuzzy_tahun = self::fuzzyTahun($item->tahun, $tahun);
                 $item->fuzzy_processor = self::fuzzyKecProcessor($item->speed_processor, $kec_processor);
@@ -186,18 +188,21 @@ class FuzzyController extends Controller
                 $item->rata_derajat_keanggotaan = ($item->fuzzy_tahun + $item->fuzzy_processor + $item->fuzzy_ram + $item->fuzzy_kec_ram + $item->fuzzy_storage + $item->fuzzy_storage_write + $item->fuzzy_storage_read) / 7;
             }
         } else {
-            $data['product'] = $product->where('harga', '<=', $biaya);
+
+            $data['product'] = $product->where('harga', '<=', $biaya)->sortBy('harga');
             return view('fuzzy', $data);
         }
-        dd("jalan");
+        if ($tipe != 'semua') {
+            $product = $product->where('tipe', $tipe);
+        }
 
-        $product = $product->where('tipe', $tipe);
         $data['product'] = $product->where('harga', '<=', $biaya)->sortByDesc('rata_derajat_keanggotaan');
         return view('fuzzy', $data);
     }
 
     public function form()
     {
-        return view('form');
+        $data['processor'] = Product::select('processor')->groupBy('processor')->get();
+        return view('form', $data);
     }
 }
